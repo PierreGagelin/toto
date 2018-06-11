@@ -55,22 +55,25 @@ intrusive_ptr_release(class shared_int *p)
 }
 
 template <typename T>
-void use_ptr(T ptr)
+void use_ptr_val(T ptr) __attribute__((noinline));
+template <typename T>
+void use_ptr_val(T ptr)
 {
-    if (RAND > -1)
+    if (RAND > RAND_MAX)
     {
         ++ptr->value;
     }
 }
 
 template <typename T>
-void swap_ptr(T ptr1, T ptr2)
+void use_ptr_ref(T &ptr) __attribute__((noinline));
+template <typename T>
+void use_ptr_ref(T &ptr)
 {
-    T dummy;
-
-    dummy = ptr1;
-    ptr1 = ptr2;
-    ptr2 = dummy;
+    if (RAND > RAND_MAX)
+    {
+        ++ptr->value;
+    }
 }
 
 //
@@ -80,9 +83,13 @@ TEST_F(tu_smart_ptr, smart_ptr)
 {
     std::chrono::time_point<std::chrono::high_resolution_clock> beg;
     std::chrono::time_point<std::chrono::high_resolution_clock> end;
-    std::chrono::duration<double> diff_raw;
-    std::chrono::duration<double> diff_itr;
-    std::chrono::duration<double> diff_shd;
+
+    std::chrono::duration<double> diff_raw_val;
+    std::chrono::duration<double> diff_itr_val;
+    std::chrono::duration<double> diff_shd_val;
+    std::chrono::duration<double> diff_raw_ref;
+    std::chrono::duration<double> diff_itr_ref;
+    std::chrono::duration<double> diff_shd_ref;
 
     class shared_int *raw;
     boost::intrusive_ptr<class shared_int> intrusive;
@@ -90,7 +97,7 @@ TEST_F(tu_smart_ptr, smart_ptr)
     class shared_int *ptr;
     size_t iteration_count;
 
-    iteration_count = 10 * 1000 * 1000;
+    iteration_count = 100 * 1000 * 1000;
 
     // Allocate different types of pointers
     raw = new class shared_int;
@@ -103,42 +110,74 @@ TEST_F(tu_smart_ptr, smart_ptr)
     intrusive->value = RAND;
     shared->value = RAND;
 
+    // Passing argument by value
     beg = std::chrono::high_resolution_clock::now();
     {
         for (size_t i = 0; i < iteration_count; ++i)
         {
-            use_ptr(raw);
-            swap_ptr(raw, raw);
+            use_ptr_val(raw);
         }
     }
     end = std::chrono::high_resolution_clock::now();
-    diff_raw = end - beg;
+    diff_raw_val = end - beg;
 
     beg = std::chrono::high_resolution_clock::now();
     {
         for (size_t i = 0; i < iteration_count; ++i)
         {
-            use_ptr(intrusive);
-            swap_ptr(intrusive, intrusive);
+            use_ptr_val(intrusive);
         }
     }
     end = std::chrono::high_resolution_clock::now();
-    diff_itr = end - beg;
+    diff_itr_val = end - beg;
 
     beg = std::chrono::high_resolution_clock::now();
     {
         for (size_t i = 0; i < iteration_count; ++i)
         {
-            use_ptr(shared);
-            swap_ptr(shared, shared);
+            use_ptr_val(shared);
         }
     }
     end = std::chrono::high_resolution_clock::now();
-    diff_shd = end - beg;
+    diff_shd_val = end - beg;
 
-    DEBUG("COPY RAW       [iteration=%zu ; time=%es]", iteration_count, diff_raw.count());
-    DEBUG("COPY INTRUSIVE [iteration=%zu ; time=%es]", iteration_count, diff_itr.count());
-    DEBUG("COPY SHARED    [iteration=%zu ; time=%es]", iteration_count, diff_shd.count());
+    // Passing argument by reference
+    beg = std::chrono::high_resolution_clock::now();
+    {
+        for (size_t i = 0; i < iteration_count; ++i)
+        {
+            use_ptr_ref(raw);
+        }
+    }
+    end = std::chrono::high_resolution_clock::now();
+    diff_raw_ref = end - beg;
+
+    beg = std::chrono::high_resolution_clock::now();
+    {
+        for (size_t i = 0; i < iteration_count; ++i)
+        {
+            use_ptr_ref(intrusive);
+        }
+    }
+    end = std::chrono::high_resolution_clock::now();
+    diff_itr_ref = end - beg;
+
+    beg = std::chrono::high_resolution_clock::now();
+    {
+        for (size_t i = 0; i < iteration_count; ++i)
+        {
+            use_ptr_ref(shared);
+        }
+    }
+    end = std::chrono::high_resolution_clock::now();
+    diff_shd_ref = end - beg;
+
+    DEBUG("VALUE RAW       [iteration=%zu ; time=%es]", iteration_count, diff_raw_val.count());
+    DEBUG("VALUE INTRUSIVE [iteration=%zu ; time=%es]", iteration_count, diff_itr_val.count());
+    DEBUG("VALUE SHARED    [iteration=%zu ; time=%es]", iteration_count, diff_shd_val.count());
+    DEBUG("REFERENCE RAW       [iteration=%zu ; time=%es]", iteration_count, diff_raw_ref.count());
+    DEBUG("REFERENCE INTRUSIVE [iteration=%zu ; time=%es]", iteration_count, diff_itr_ref.count());
+    DEBUG("REFERENCE SHARED    [iteration=%zu ; time=%es]", iteration_count, diff_shd_ref.count());
 
     delete raw;
 }
