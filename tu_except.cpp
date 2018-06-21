@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     (void) argc;
     (void) argv;
 
-    iteration_count = 1 * 1000 * 1000;
+    iteration_count = 1 * 100 * 1000;
 
     // Fill a vector with possible exception during move construction
     beg = std::chrono::high_resolution_clock::now();

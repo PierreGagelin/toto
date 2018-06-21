@@ -140,7 +140,7 @@ int main(int argc, char **argv)
     (void) argc;
     (void) argv;
 
-    iteration_count = 100 * 1000 * 1000;
+    iteration_count = 1 * 1000 * 1000;
     seed = std::rand();
 
     // Allocate different types of pointers
