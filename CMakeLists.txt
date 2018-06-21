@@ -25,3 +25,7 @@ add_executable(tu_smart_ptr tu_smart_ptr.cpp)
 target_compile_options(tu_smart_ptr PRIVATE ${COMPILE_OPTION})
 add_test(NAME tu_smart_ptr COMMAND tu_smart_ptr)
 
+add_executable(tu_except tu_except.cpp)
+target_compile_options(tu_except PRIVATE ${COMPILE_OPTION})
+add_test(NAME tu_except COMMAND tu_except)
+
