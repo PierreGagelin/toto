@@ -10,9 +10,7 @@
 
 #include "toto.hpp"
 
-int seed;
-
-class shared_int
+struct shared_int
 {
   public:
     int value;
@@ -22,13 +20,13 @@ class shared_int
 };
 
 inline void
-intrusive_ptr_add_ref(class shared_int *p)
+intrusive_ptr_add_ref(struct shared_int *p) noexcept
 {
     ++p->ref;
 }
 
 inline void
-intrusive_ptr_release(class shared_int *p)
+intrusive_ptr_release(struct shared_int *p) noexcept
 {
     --p->ref;
     if (p->ref == 0)
@@ -38,77 +36,33 @@ intrusive_ptr_release(class shared_int *p)
 }
 
 template <typename T>
-void use_ptr_val(T ptr) __attribute__((noinline));
-template <typename T>
-void use_ptr_val(T ptr)
+__attribute__((noinline)) void
+use_ptr_val(T ptr) noexcept
 {
-    if (seed > -1)
+    if (ptr->value > RAND_MAX)
     {
         ++ptr->value;
     }
 }
 
 template <typename T>
-void use_ptr_ref(T &ptr) __attribute__((noinline));
-template <typename T>
-void use_ptr_ref(T &ptr)
+__attribute__((noinline)) void
+use_ptr_ref(T &ptr) noexcept
 {
-    if (seed > -1)
+    if (ptr->value > RAND_MAX)
     {
         ++ptr->value;
     }
 }
 
 template <typename T>
-T &&use_ptr_fwd(T &&ptr) __attribute__((noinline));
-template <typename T>
-T &&use_ptr_fwd(T &&ptr)
+__attribute__((noinline)) void
+use_ptr_fwd(T &&ptr) noexcept
 {
-    if (seed > -1)
+    if (ptr->value > RAND_MAX)
     {
         ++ptr->value;
     }
-    return std::forward<T>(ptr);
-}
-
-class shared_int *&&use_raw_fwd(class shared_int *&&ptr) __attribute__((noinline));
-class shared_int *&&use_raw_fwd(class shared_int *&&ptr)
-{
-    if (seed > -1)
-    {
-        ++ptr->value;
-    }
-    return std::forward<class shared_int *>(ptr);
-}
-
-boost::intrusive_ptr<class shared_int> &&use_itr_fwd(boost::intrusive_ptr<class shared_int> &&ptr) __attribute__((noinline));
-boost::intrusive_ptr<class shared_int> &&use_itr_fwd(boost::intrusive_ptr<class shared_int> &&ptr)
-{
-    if (seed > -1)
-    {
-        ++ptr->value;
-    }
-    return std::forward<boost::intrusive_ptr<shared_int>>(ptr);
-}
-
-std::shared_ptr<class shared_int> &&use_shd_fwd(std::shared_ptr<class shared_int> &&ptr) __attribute__((noinline));
-std::shared_ptr<class shared_int> &&use_shd_fwd(std::shared_ptr<class shared_int> &&ptr)
-{
-    if (seed > -1)
-    {
-        ++ptr->value;
-    }
-    return std::forward<std::shared_ptr<shared_int>>(ptr);
-}
-
-std::unique_ptr<class shared_int> &&use_uni_fwd(std::unique_ptr<class shared_int> &&ptr) __attribute__((noinline));
-std::unique_ptr<class shared_int> &&use_uni_fwd(std::unique_ptr<class shared_int> &&ptr)
-{
-    if (seed > -1)
-    {
-        ++ptr->value;
-    }
-    return std::forward<std::unique_ptr<shared_int>>(ptr);
 }
 
 //
@@ -128,34 +82,31 @@ int main(int argc, char **argv)
     std::chrono::duration<double> diff_raw_fwd;
     std::chrono::duration<double> diff_itr_fwd;
     std::chrono::duration<double> diff_shd_fwd;
-    std::chrono::duration<double> diff_uni_fwd;
 
-    class shared_int *raw;
-    boost::intrusive_ptr<class shared_int> intrusive;
-    std::shared_ptr<class shared_int> shared;
-    std::unique_ptr<class shared_int> unique;
-    class shared_int *ptr;
+    struct shared_int *raw;
+    boost::intrusive_ptr<struct shared_int> intrusive;
+    std::shared_ptr<struct shared_int> shared;
+    struct shared_int *ptr;
+
     size_t iteration_count;
+    int seed;
 
-    (void) argc;
-    (void) argv;
+    (void)argc;
+    (void)argv;
 
     iteration_count = 1 * 1000 * 1000;
     seed = std::rand();
 
     // Allocate different types of pointers
-    raw = new class shared_int;
-    ptr = new class shared_int;
-    intrusive = boost::intrusive_ptr<class shared_int>(ptr);
-    ptr = new class shared_int;
-    shared = std::shared_ptr<class shared_int>(ptr);
-    ptr = new class shared_int;
-    unique = std::unique_ptr<class shared_int>(ptr);
+    raw = new struct shared_int;
+    ptr = new struct shared_int;
+    intrusive = boost::intrusive_ptr<struct shared_int>(ptr);
+    ptr = new struct shared_int;
+    shared = std::shared_ptr<struct shared_int>(ptr);
 
     raw->value = seed;
     intrusive->value = seed;
     shared->value = seed;
-    unique->value = seed;
 
     // Passing argument by value
     beg = std::chrono::high_resolution_clock::now();
@@ -224,7 +175,7 @@ int main(int argc, char **argv)
     {
         for (size_t i = 0; i < iteration_count; ++i)
         {
-            raw = use_raw_fwd(std::move(raw));
+            use_ptr_fwd(std::move(raw));
         }
     }
     end = std::chrono::high_resolution_clock::now();
@@ -234,7 +185,7 @@ int main(int argc, char **argv)
     {
         for (size_t i = 0; i < iteration_count; ++i)
         {
-            intrusive = use_itr_fwd(std::move(intrusive));
+            use_ptr_fwd(std::move(intrusive));
         }
     }
     end = std::chrono::high_resolution_clock::now();
@@ -244,21 +195,11 @@ int main(int argc, char **argv)
     {
         for (size_t i = 0; i < iteration_count; ++i)
         {
-            shared = use_shd_fwd(std::move(shared));
+            use_ptr_fwd(std::move(shared));
         }
     }
     end = std::chrono::high_resolution_clock::now();
     diff_shd_fwd = end - beg;
-
-    beg = std::chrono::high_resolution_clock::now();
-    {
-        for (size_t i = 0; i < iteration_count; ++i)
-        {
-            unique = use_uni_fwd(std::move(unique));
-        }
-    }
-    end = std::chrono::high_resolution_clock::now();
-    diff_uni_fwd = end - beg;
 
     DEBUG("VALUE RAW       [iteration=%zu ; time=%es]", iteration_count, diff_raw_val.count());
     DEBUG("VALUE INTRUSIVE [iteration=%zu ; time=%es]", iteration_count, diff_itr_val.count());
@@ -269,7 +210,6 @@ int main(int argc, char **argv)
     DEBUG("FORWARD RAW       [iteration=%zu ; time=%es]", iteration_count, diff_raw_fwd.count());
     DEBUG("FORWARD INTRUSIVE [iteration=%zu ; time=%es]", iteration_count, diff_itr_fwd.count());
     DEBUG("FORWARD SHARED    [iteration=%zu ; time=%es]", iteration_count, diff_shd_fwd.count());
-    DEBUG("FORWARD UNIQUE    [iteration=%zu ; time=%es]", iteration_count, diff_uni_fwd.count());
 
     delete raw;
 
