@@ -3,7 +3,7 @@ syntax = "proto2";
 
 option optimize_for = LITE_RUNTIME;
 
-message person
+message toto_pb
 {
     required int32 id1 = 1;
     required int32 id2 = 2;
