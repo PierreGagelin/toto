@@ -16,8 +16,8 @@ target_compile_options(toto_pb PRIVATE ${COMPILE_OPTION})
 target_include_directories(toto_pb PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(toto_pb PUBLIC ${PROTOBUF_INCLUDE_DIRS})
 
-#target_link_libraries(toto_pb ${PROTOBUF_LITE_LIBRARIES})
-target_link_libraries(toto_pb ${PROTOBUF_LIBRARIES})
+target_link_libraries(toto_pb ${PROTOBUF_LITE_LIBRARIES})
+#target_link_libraries(toto_pb ${PROTOBUF_LIBRARIES})
 
 
 # Build protobuf test
