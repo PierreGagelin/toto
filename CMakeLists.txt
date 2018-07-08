@@ -13,19 +13,27 @@ set(CMAKE_BUILD_TYPE Release)
 
 
 # Allow tests to register themselves as tests
-enable_testing()
+include(CTest)
 
 
 # Compilation options to add
 set(COMPILE_OPTION -std=c++11 -Wall -Wextra)
 
+# Include directory
+set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
+
+function (toto_add_test target_name target_sources)
+    add_executable(${target_name} "${target_sources}")
+    target_compile_options(${target_name} PRIVATE ${COMPILE_OPTION})
+    target_include_directories(${target_name} PRIVATE ${INCLUDE_DIR})
+    add_test(NAME ${target_name} COMMAND ${target_name})
+endfunction (toto_add_test)
+
 
 # Build tests
-add_executable(tu_smart_ptr tu_smart_ptr.cpp)
-target_compile_options(tu_smart_ptr PRIVATE ${COMPILE_OPTION})
-add_test(NAME tu_smart_ptr COMMAND tu_smart_ptr)
+toto_add_test(tu_smart_ptr tu_smart_ptr.cpp)
 
-add_executable(tu_except tu_except.cpp)
-target_compile_options(tu_except PRIVATE ${COMPILE_OPTION})
-add_test(NAME tu_except COMMAND tu_except)
+toto_add_test(tu_except tu_except.cpp)
 
+
+add_subdirectory(protobuf)
