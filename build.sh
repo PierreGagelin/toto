@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Script to build the toto project
-# Works with relative path
 
-DIR_SOURCE=$(dirname $_)
-DIR_BUILD="$DIR_SOURCE/build"
+DIR_SCRIPT=$(dirname $0)
+DIR_CMD=$(pwd)
+DIR_SOURCE=$DIR_CMD/$DIR_SCRIPT
+DIR_BUILD=$DIR_SOURCE/../build
 
 ACTION_BUILD="false"
 ACTION_CLEAN="false"
@@ -20,7 +21,7 @@ function action_build
 
     # Could use cmake's -H and -B options but it's undocumented so better not rely on those
     cd $DIR_BUILD
-    cmake ../
+    cmake $DIR_SOURCE
     cd -
 
     make -C $DIR_BUILD -j 2
