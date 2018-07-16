@@ -37,3 +37,4 @@ toto_add_test(tu_except tu_except.cpp)
 
 
 add_subdirectory(protobuf)
+add_subdirectory(zmq)
