@@ -1,0 +1,24 @@
+#! /bin/bash
+
+# LS
+alias ls='ls --color=auto'
+alias ll='ls -alh'
+
+# CD
+alias cdd='cd /home/pir/dev'
+alias cdb='cd /home/pir/build'
+
+# GREP
+alias grep='grep -n --color=auto'
+alias gg='git grep -n'
+alias ggi='git grep -n -i'
+
+# FREE
+alias free='free -h'
+alias freee='sudo sysctl -w vm.drop_caches=3'
+
+# VALGRIND
+alias V='valgrind --leak-check=full --show-leak-kinds=all'
+
+# ROBOT
+alias robot='PYTHONDONTWRITEBYTECODE=1 robot --output NONE --report NONE --log NONE'

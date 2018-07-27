@@ -1,0 +1,8 @@
+[user]
+    email = pierre.gagelin@gmail.com
+    name = Pierre gagelin
+[push]
+    default = simple
+[alias]
+    st = status
+    co = checkout
