@@ -13,6 +13,10 @@ alias grep='grep -n --color=auto'
 alias gg='git grep -n'
 alias ggi='git grep -n -i'
 
+# FIND
+alias ff='find . -name'
+alias ffi='find . -iname'
+
 # FREE
 alias free='free -h'
 alias freee='sudo sysctl -w vm.drop_caches=3'
