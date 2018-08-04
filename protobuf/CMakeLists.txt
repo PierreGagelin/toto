@@ -24,7 +24,7 @@ target_link_libraries(toto_pb ${PROTOBUF_LITE_LIBRARIES})
 protobuf_generate_python(PROTO_SRCS_PY toto_pb.proto)
 add_custom_target(toto_pb_py ALL DEPENDS ${PROTO_SRCS_PY})
 configure_file(tu_toto_pb.py tu_toto_pb.py COPYONLY)
-add_test(NAME tu_toto_pb_py COMMAND ./tu_toto_pb.py)
+add_test(NAME tu_toto_pb_py COMMAND python3 tu_toto_pb.py)
 
 
 # Build protobuf test

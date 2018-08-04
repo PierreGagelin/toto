@@ -70,7 +70,7 @@ __attribute__((noinline)) void timebox(T param, const char *msg)
     end = std::chrono::high_resolution_clock::now();
     diff = end - beg;
 
-    if (param->value > 1234567890ul)
+    if (param->value > 1234567890l)
     {
         ++hit;
     }
