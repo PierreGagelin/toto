@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 
 # Build type: either Debug or Release
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 
 # Allow tests to register themselves as tests
@@ -29,6 +29,11 @@ function (toto_add_test target_name target_sources)
     add_test(NAME ${target_name} COMMAND ${target_name})
 endfunction (toto_add_test)
 
+function (toto_add_lib target_name target_type target_sources)
+    add_library(${target_name} ${target_type} "${target_sources}")
+    target_compile_options(${target_name} PRIVATE ${COMPILE_OPTION})
+    target_include_directories(${target_name} PRIVATE ${INCLUDE_DIR})
+endfunction (toto_add_lib)
 
 # Build tests
 toto_add_test(tu_smart_ptr tu_smart_ptr.cpp)
@@ -36,5 +41,6 @@ toto_add_test(tu_smart_ptr tu_smart_ptr.cpp)
 toto_add_test(tu_except tu_except.cpp)
 
 
+add_subdirectory(factory)
 add_subdirectory(protobuf)
 add_subdirectory(zmq)

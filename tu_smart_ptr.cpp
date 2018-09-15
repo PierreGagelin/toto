@@ -4,7 +4,7 @@
 
 #include "toto.hpp"
 
-constexpr size_t iteration_count = 10 * 1000 * 1000;
+constexpr size_t iteration_count = 1 * 10 * 1000;
 size_t hit;
 
 struct shared_int

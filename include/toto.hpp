@@ -4,6 +4,10 @@
 #include <cstdlib>
 #include <memory>
 
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include <boost/intrusive_ptr.hpp>
 
 #define STR(token) #token

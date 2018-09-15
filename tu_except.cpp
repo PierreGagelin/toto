@@ -2,10 +2,6 @@
 // Test unit to try the benefit on exception safety
 //
 
-#include <chrono>
-#include <vector>
-#include <string>
-
 #include "toto.hpp"
 
 // Define a class without exceptions
