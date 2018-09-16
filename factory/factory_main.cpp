@@ -1,23 +1,26 @@
 
 #include "factory.hpp"
 
+// Factory of base class pointers: is filled with derived class constructor and destructors
 std::unordered_map<std::string, struct base_factory *> *factory;
-
 std::unordered_map<std::string, struct base_factory *> *factory_get()
 {
     if (factory == nullptr)
     {
-        factory =  new std::unordered_map<std::string, struct base_factory *>;
+        factory = new std::unordered_map<std::string, struct base_factory *>;
     }
     return factory;
 }
 
 struct derived : base
 {
-    virtual ~derived() override {}
-    virtual void method() override { DEBUG("Construct derived struct instance"); }
+    derived() : base() { DEBUG("Create derived struct instance"); }
+    virtual ~derived() override { DEBUG("Destroy derived struct instance"); }
+
+    virtual void method() override {}
 };
 
+// Interface to create and destroy derived class via factory approach
 struct derived_factory : base_factory
 {
     virtual struct base *create() override
@@ -29,7 +32,6 @@ struct derived_factory : base_factory
         delete static_cast<struct derived *>(entry);
     }
 };
-
 struct derived_register
 {
     derived_register()
@@ -39,19 +41,55 @@ struct derived_register
 };
 struct derived_register derived_entry;
 
+// Interface to create and destroy derived class via dlopen / dlsym approach
+extern "C"
+{
+    struct base *derived_create()
+    {
+        return new derived;
+    }
+    void derived_destroy(struct base *entry)
+    {
+        delete static_cast<struct derived *>(entry);
+    }
+}
+
 int main(int, char **)
 {
     struct base *entry;
+    void *handle;
+    struct base *(*create)();
+    void (*destroy)(struct base *);
 
+    // dlopen method
+    handle = dlopen(nullptr, RTLD_LAZY);
+    if (handle == nullptr)
+    {
+        ERR("Failed to open library");
+    }
+
+    create = reinterpret_cast<struct base *(*)()>(dlsym(handle, "derived_create"));
+    destroy = reinterpret_cast<void (*)(struct base *)>(dlsym(handle, "derived_destroy"));
+    if ((create == nullptr) || (destroy == nullptr))
+    {
+        ERR("Failed to load function_main symbols");
+    }
+    entry = create();
+    destroy(entry);
+
+    create = reinterpret_cast<struct base *(*)()>(dlsym(handle, "derived_lib_create"));
+    destroy = reinterpret_cast<void (*)(struct base *)>(dlsym(handle, "derived_lib_destroy"));
+    if ((create == nullptr) || (destroy == nullptr))
+    {
+        ERR("Failed to load function_lib symbols");
+    }
+    entry = create();
+    destroy(entry);
+
+    // factory method
     entry = (*factory_get())["derived"]->create();
-
-    entry->method();
-
     (*factory_get())["derived"]->destroy(entry);
 
     entry = (*factory_get())["derived_lib"]->create();
-
-    entry->method();
-
     (*factory_get())["derived"]->destroy(entry);
 }

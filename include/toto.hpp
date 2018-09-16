@@ -1,4 +1,8 @@
 
+
+#ifndef TOTO_HPP
+#define TOTO_HPP
+
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
@@ -32,3 +36,5 @@
             exit(1);                                  \
         }                                             \
     } while (false);
+
+#endif // TOTO_HPP
