@@ -1,0 +1,14 @@
+{
+    "editor.detectIndentation": false,
+    "editor.fontSize": 14,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "terminal.integrated.fontSize": 14,
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.minimap.enabled": false,
+    "workbench.statusBar.visible": false,
+    "workbench.activityBar.visible": false,
+    "window.menuBarVisibility": "toggle",
+    "workbench.colorTheme": "Default Light+",
+}
