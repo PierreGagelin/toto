@@ -36,8 +36,15 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# PS1 customization
 GIT_PS1_SHOWDIRTYSTATE=1
-PS1='\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(__git_ps1)\[\033[00m\] \$ '
+PS1='\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\] \$ '
+
+# GNU make customization flags
+if [[ ! "$MAKEFLAGS" =~ "--no-print-directory" ]]
+then
+    export MAKEFLAGS="$MAKEFLAGS --no-print-directory"
+fi
 
 # Alias definitions
 if [ -f ~/.bash_aliases ]
