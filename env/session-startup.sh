@@ -32,6 +32,6 @@ do
     for file in $(find "$folder" -maxdepth 1 -type f | shuf)
     do
         pcmanfm -w "$file" --wallpaper-mode=stretch
-        sleep "$sleepTime"
+        sleep "$sleepTime" || true
     done
 done
