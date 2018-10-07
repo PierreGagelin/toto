@@ -65,14 +65,14 @@ int main(int, char **)
     handle = dlopen(nullptr, RTLD_LAZY);
     if (handle == nullptr)
     {
-        ERR("Failed to open library");
+        ERROR("Failed to open library");
     }
 
     create = reinterpret_cast<struct base *(*)()>(dlsym(handle, "derived_create"));
     destroy = reinterpret_cast<void (*)(struct base *)>(dlsym(handle, "derived_destroy"));
     if ((create == nullptr) || (destroy == nullptr))
     {
-        ERR("Failed to load function_main symbols");
+        ERROR("Failed to load function_main symbols");
     }
     entry = create();
     destroy(entry);
@@ -81,7 +81,7 @@ int main(int, char **)
     destroy = reinterpret_cast<void (*)(struct base *)>(dlsym(handle, "derived_lib_destroy"));
     if ((create == nullptr) || (destroy == nullptr))
     {
-        ERR("Failed to load function_lib symbols");
+        ERROR("Failed to load function_lib symbols");
     }
     entry = create();
     destroy(entry);

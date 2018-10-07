@@ -1,33 +1,50 @@
 #!/bin/bash
 
+#
 # Script to build the toto project
+#
 
+# Project directories
 DIR_SCRIPT=$(dirname $0)
 DIR_CMD=$(pwd)
 DIR_SOURCE=$DIR_CMD/$DIR_SCRIPT
 DIR_BUILD=$DIR_SOURCE/../build
 
-ACTION_BUILD="false"
-ACTION_CLEAN="false"
-
-
 # Exit on error or undefined variable
 set -eu
 
+# Customize toto
+TOTO_FACTORY="OFF"
+TOTO_JSON="OFF"
+TOTO_PROTOBUF="OFF"
+TOTO_ZMQ="OFF"
 
+# Customize cmake
+CMAKE_BUILD_TYPE="Debug"
+
+# Action to do
+ACTION_BUILD="false"
+ACTION_CLEAN="false"
+ACTION_TEST="false"
+
+#
+# Build the project
+#
 function action_build
 {
     mkdir -p $DIR_BUILD
 
     # Could use cmake's -H and -B options but it's undocumented so better not rely on those
     cd $DIR_BUILD
-    cmake $DIR_SOURCE
+    cmake $CMAKE_OPTION $DIR_SOURCE
     cd -
 
-    make -C $DIR_BUILD -j 2
+    make -C $DIR_BUILD
 }
 
-
+#
+# Clean the build directory
+#
 function action_clean
 {
     if [ ! -d $DIR_BUILD ]
@@ -40,15 +57,49 @@ function action_clean
     make -C $DIR_BUILD clean
 }
 
+#
+# Run the tests
+#
+function action_test
+{
+    make -C $DIR_BUILD test
+}
 
-while getopts "bch" opt
+#
+# Retrieve command line options
+#
+while getopts "AB:FJPZbcht" option
 do
-    case "${opt}" in
+    case $option in
+        A)
+            TOTO_FACTORY="ON"
+            TOTO_JSON="ON"
+            TOTO_PROTOBUF="ON"
+            TOTO_ZMQ="ON"
+            ;;
+        B)
+            CMAKE_BUILD_TYPE=$OPTARG
+            ;;
+        F)
+            TOTO_FACTORY="ON"
+            ;;
+        J)
+            TOTO_JSON="ON"
+            ;;
+        P)
+            TOTO_PROTOBUF="ON"
+            ;;
+        Z)
+            TOTO_ZMQ="ON"
+            ;;
         b)
             ACTION_BUILD="true"
             ;;
         c)
             ACTION_CLEAN="true"
+            ;;
+        t)
+            ACTION_TEST="true"
             ;;
         h)
             echo "lol, t'as cru un peu, non ?"
@@ -59,15 +110,28 @@ do
     esac
 done
 
+# Build options
+CMAKE_OPTION=
+CMAKE_OPTION="$CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE"
+CMAKE_OPTION="$CMAKE_OPTION -DTOTO_FACTORY:BOOL=$TOTO_FACTORY"
+CMAKE_OPTION="$CMAKE_OPTION -DTOTO_JSON:BOOL=$TOTO_JSON"
+CMAKE_OPTION="$CMAKE_OPTION -DTOTO_PROTOBUF:BOOL=$TOTO_PROTOBUF"
+CMAKE_OPTION="$CMAKE_OPTION -DTOTO_ZMQ:BOOL=$TOTO_ZMQ"
 
+#
+# Execute actions
+#
 if [ $ACTION_CLEAN = "true" ]
 then
     action_clean
 fi
-
 
 if [ $ACTION_BUILD = "true" ]
 then
     action_build
 fi
 
+if [ $ACTION_TEST = "true" ]
+then
+    action_test
+fi

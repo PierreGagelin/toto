@@ -7,14 +7,8 @@ project(toto)
 # Generate a JSON file with compilation commands (used with Visual Studio Code)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
-
-# Build type: either Debug or Release
-set(CMAKE_BUILD_TYPE Debug)
-
-
 # Allow tests to register themselves as tests
 include(CTest)
-
 
 # Compilation options to add
 set(COMPILE_OPTION -std=c++11 -Wall -Wextra)
@@ -40,7 +34,18 @@ toto_add_test(tu_smart_ptr tu_smart_ptr.cpp)
 
 toto_add_test(tu_except tu_except.cpp)
 
+if (${TOTO_FACTORY})
+    add_subdirectory(factory)
+endif()
 
-add_subdirectory(factory)
-add_subdirectory(protobuf)
-add_subdirectory(zmq)
+if (${TOTO_JSON})
+    add_subdirectory(json)
+endif()
+
+if (${TOTO_PROTOBUF})
+    add_subdirectory(protobuf)
+endif()
+
+if (${TOTO_ZMQ})
+    add_subdirectory(zmq)
+endif()

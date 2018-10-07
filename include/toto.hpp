@@ -6,6 +6,7 @@
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <memory>
 
 #include <string>
@@ -21,10 +22,10 @@
     {                                               \
         printf("[DEBUG] " msg "\n", ##__VA_ARGS__); \
     } while (false);
-#define ERR(msg, ...)                             \
+#define ERROR(msg, ...)                             \
     do                                            \
     {                                             \
-        printf("[ERR] " msg "\n", ##__VA_ARGS__); \
+        printf("[ERROR] " msg "\n", ##__VA_ARGS__); \
     } while (false);
 
 #define ASSERT(condition)                             \
@@ -32,7 +33,7 @@
     {                                                 \
         if (!(condition))                             \
         {                                             \
-            ERR("Assertion failed: " STR(condition)); \
+            ERROR("Assertion failed: " STR(condition)); \
             exit(1);                                  \
         }                                             \
     } while (false);
