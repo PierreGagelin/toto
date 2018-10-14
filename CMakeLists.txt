@@ -30,9 +30,9 @@ function (toto_add_lib target_name target_type target_sources)
 endfunction (toto_add_lib)
 
 # Build tests
-toto_add_test(tu_smart_ptr tu_smart_ptr.cpp)
-
-toto_add_test(tu_except tu_except.cpp)
+if (${TOTO_CPP})
+    add_subdirectory(cpp)
+endif()
 
 if (${TOTO_FACTORY})
     add_subdirectory(factory)

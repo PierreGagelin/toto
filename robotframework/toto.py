@@ -39,4 +39,4 @@ class random_shit(object):
         self.name = "uninitialized shit"
 
     def display(self):
-        logger.debug(self.name)
+        logger.warn(self.name)

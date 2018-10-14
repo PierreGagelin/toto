@@ -1,11 +1,14 @@
 #!/bin/sh
 
+set -eu
+
 sudo apt update
 sudo apt upgrade
 
 # essentials
 sudo apt install -y vim
 sudo apt install -y bash-completion
+sudo apt install -y tree
 sudo apt install -y fdpowermon
 sudo apt install -y numlockx
 

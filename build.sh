@@ -14,6 +14,7 @@ DIR_BUILD=$DIR_SOURCE/../build
 set -eu
 
 # Customize toto
+TOTO_CPP="OFF"
 TOTO_FACTORY="OFF"
 TOTO_JSON="OFF"
 TOTO_PROTOBUF="OFF"
@@ -68,10 +69,11 @@ function action_test
 #
 # Retrieve command line options
 #
-while getopts "AB:FJPZbcht" option
+while getopts "AB:CFJPZbcht" option
 do
     case $option in
         A)
+            TOTO_CPP="ON"
             TOTO_FACTORY="ON"
             TOTO_JSON="ON"
             TOTO_PROTOBUF="ON"
@@ -79,6 +81,9 @@ do
             ;;
         B)
             CMAKE_BUILD_TYPE=$OPTARG
+            ;;
+        C)
+            TOTO_CPP="ON"
             ;;
         F)
             TOTO_FACTORY="ON"
@@ -113,6 +118,7 @@ done
 # Build options
 CMAKE_OPTION=
 CMAKE_OPTION="$CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE"
+CMAKE_OPTION="$CMAKE_OPTION -DTOTO_CPP:BOOL=$TOTO_CPP"
 CMAKE_OPTION="$CMAKE_OPTION -DTOTO_FACTORY:BOOL=$TOTO_FACTORY"
 CMAKE_OPTION="$CMAKE_OPTION -DTOTO_JSON:BOOL=$TOTO_JSON"
 CMAKE_OPTION="$CMAKE_OPTION -DTOTO_PROTOBUF:BOOL=$TOTO_PROTOBUF"
