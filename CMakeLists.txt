@@ -13,6 +13,8 @@ include(CTest)
 # Compilation options to add
 set(COMPILE_OPTION -std=c++11 -Wall -Wextra)
 
+set(CMAKE_CXX_FLAGS_RELEASE -O2)
+
 # Include directory
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 

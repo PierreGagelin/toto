@@ -1,8 +1,6 @@
 
 syntax = "proto2";
 
-option optimize_for = CODE_SIZE;
-
 message toto_pb
 {
     required string toto = 6;
