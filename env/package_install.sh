@@ -27,6 +27,8 @@ sudo apt install -y lcov
 sudo apt install -y libboost-dev
 sudo apt install -y libprotobuf-dev
 sudo apt install -y protobuf-compiler
+sudo apt install -y libprotobuf-c-dev
+sudo apt install -y protobuf-c-compiler
 sudo apt install -y libzmq3-dev
 python3 -m pip install pylint
 python3 -m pip install zmq
