@@ -25,18 +25,6 @@ static const char *json_type_to_string(jsmntype_t type)
     }
 }
 
-//
-// Compare a JSON token against a string
-//
-static int json_cmp(const char *json, jsmntok_t *tok, const char *str)
-{
-    if (strncmp(json + tok->start, str, tok->end - tok->start) == 0)
-    {
-        return 0;
-    }
-    return -1;
-}
-
 static void json_print(const char *json, jsmntok_t *tok, int idx)
 {
     DEBUG("Token [index=%d ; type=%s ; value=%.*s]",
@@ -74,39 +62,6 @@ int main(int, char **)
     {
         json_print(json, token, i);
     }
-
-#if 0
-        if (jsoneq(json, &t[i], "user") == 0) {
-			/* We may use strndup() to fetch string value */
-			printf("- User: %.*s\n", t[i+1].end-t[i+1].start,
-					json + t[i+1].start);
-			i++;
-		} else if (jsoneq(json, &t[i], "admin") == 0) {
-			/* We may additionally check if the value is either "true" or "false" */
-			printf("- Admin: %.*s\n", t[i+1].end-t[i+1].start,
-					json + t[i+1].start);
-			i++;
-		} else if (jsoneq(json, &t[i], "uid") == 0) {
-			/* We may want to do strtol() here to get numeric value */
-			printf("- UID: %.*s\n", t[i+1].end-t[i+1].start,
-					json + t[i+1].start);
-			i++;
-		} else if (jsoneq(json, &t[i], "groups") == 0) {
-			int j;
-			printf("- Groups:\n");
-			if (t[i+1].type != JSMN_ARRAY) {
-				continue; /* We expect groups to be an array of strings */
-			}
-			for (j = 0; j < t[i+1].size; j++) {
-				jsmntok_t *g = &t[i+j+2];
-				printf("  * %.*s\n", g->end - g->start, json + g->start);
-			}
-			i += t[i+1].size + 1;
-		} else {
-			printf("Unexpected key: %.*s\n", t[i].end-t[i].start,
-					json + t[i].start);
-		}
-#endif
 
     delete[] token;
 
