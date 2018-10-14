@@ -1,14 +1,10 @@
 
 syntax = "proto2";
 
-option optimize_for = LITE_RUNTIME;
+option optimize_for = CODE_SIZE;
 
 message toto_pb
 {
-    required int32 id1 = 1;
-    required int32 id2 = 2;
-    required int32 id3 = 3;
-    required int32 id4 = 4;
-    required int32 id5 = 5;
     required string toto = 6;
+    repeated int32 ids = 7;
 }

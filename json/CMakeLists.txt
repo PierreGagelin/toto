@@ -7,12 +7,13 @@ include(ExternalProject)
 # Configure jsmn as an external project
 ExternalProject_Add(project_jsmn
     GIT_REPOSITORY      https://github.com/zserge/jsmn.git
+    GIT_TAG             18e9fe42cbfe21d65076f5c77ae2be379ad1270f
     SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/jsmn
     BINARY_DIR          ${CMAKE_CURRENT_BINARY_DIR}/jsmn
     CONFIGURE_COMMAND   ""
     BUILD_COMMAND       make
     INSTALL_COMMAND     ""
-    TEST_COMMAND        make test
+    TEST_COMMAND        ""
 )
 
 # Build jsmn library
