@@ -11,4 +11,9 @@
     "workbench.activityBar.visible": false,
     "window.menuBarVisibility": "toggle",
     "workbench.colorTheme": "Default Light+",
+    "terminal.integrated.rendererType": "dom",
+    "update.enableWindowsBackgroundUpdates": false,
+    "update.showReleaseNotes": false,
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
 }
