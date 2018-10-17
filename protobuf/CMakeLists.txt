@@ -11,7 +11,7 @@ set(PROTOBUF_USE_STATIC_LIBS off)
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS toto_pb.proto)
 set(SOURCES ${PROTO_SRCS} ${PROTO_HDRS})
 add_library(toto_pb STATIC ${SOURCES})
-target_compile_options(toto_pb PRIVATE ${COMPILE_OPTION})
+target_compile_options(toto_pb PRIVATE ${COMPILE_OPTION_CPP})
 target_include_directories(toto_pb PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(toto_pb PUBLIC ${PROTOBUF_INCLUDE_DIRS})
 #target_link_libraries(toto_pb ${PROTOBUF_LITE_LIBRARIES})
@@ -32,10 +32,15 @@ add_test(NAME tu_toto_pb_py COMMAND python3 tu_toto_pb.py)
 #
 
 # Generate C library
-execute_process(COMMAND protoc-c --c_out=${CMAKE_CURRENT_BINARY_DIR} toto_pb.proto WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_library(toto_proto_c STATIC ${CMAKE_CURRENT_BINARY_DIR}/toto_pb.pb-c.c)
+set(PROTO_FILE toto_pb.proto)
+set(PROTO_CMD protoc-c --c_out=${CMAKE_CURRENT_BINARY_DIR} ${PROTO_FILE})
+set(PROTO_GEN ${CMAKE_CURRENT_BINARY_DIR}/toto_pb.pb-c.c)
+add_custom_command(OUTPUT ${PROTO_GEN} COMMAND ${PROTO_CMD} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DEPENDS ${PROTO_FILE})
+
+add_library(toto_proto_c STATIC ${PROTO_GEN})
+
 target_link_libraries(toto_proto_c /usr/lib/x86_64-linux-gnu/libprotobuf-c.a)
-target_compile_options(toto_proto_c PRIVATE ${COMPILE_OPTION})
+target_compile_options(toto_proto_c PRIVATE ${COMPILE_OPTION_C})
 target_include_directories(toto_proto_c PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 # Build test
