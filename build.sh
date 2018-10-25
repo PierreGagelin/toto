@@ -26,6 +26,7 @@ CMAKE_BUILD_TYPE="Debug"
 # Action to do
 ACTION_BUILD="false"
 ACTION_CLEAN="false"
+ACTION_INSTALL="false"
 ACTION_TEST="false"
 
 #
@@ -59,6 +60,30 @@ function action_clean
 }
 
 #
+# Install required packages
+#
+function action_install
+{
+    wget --directory-prefix=/tmp/ https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-cpp-3.6.1.tar.gz
+    wget --directory-prefix=/tmp/ https://github.com/protobuf-c/protobuf-c/releases/download/v1.3.1/protobuf-c-1.3.1.tar.gz
+
+    tar -C /tmp/ -xzf /tmp/protobuf-cpp-3.6.1.tar.gz
+    tar -C /tmp/ -xzf /tmp/protobuf-c-1.3.1.tar.gz
+
+    cd /tmp/protobuf-3.6.1
+    CFLAGS=-O2 CXXFLAGS="-std=c++11 -O2" ./configure
+    make -j 4
+    sudo make install
+    cd -
+
+    cd /tmp/protobuf-c-1.3.1
+    CFLAGS=-O2 CXXFLAGS="-O2" ./configure
+    make -j 4
+    sudo make install
+    cd -
+}
+
+#
 # Run the tests
 #
 function action_test
@@ -69,7 +94,7 @@ function action_test
 #
 # Retrieve command line options
 #
-while getopts "AB:CFJPZbcht" option
+while getopts "AB:CFJPZbchit" option
 do
     case $option in
         A)
@@ -103,6 +128,9 @@ do
         c)
             ACTION_CLEAN="true"
             ;;
+        i)
+            ACTION_INSTALL="true"
+            ;;
         t)
             ACTION_TEST="true"
             ;;
@@ -127,6 +155,11 @@ CMAKE_OPTION="$CMAKE_OPTION -DTOTO_ZMQ:BOOL=$TOTO_ZMQ"
 #
 # Execute actions
 #
+if [ $ACTION_INSTALL = "true" ]
+then
+    action_install
+fi
+
 if [ $ACTION_CLEAN = "true" ]
 then
     action_clean
