@@ -5,7 +5,7 @@ alias ls='ls --color=auto'
 alias ll='ls -alh'
 
 # CD
-alias cdd='cd /home/pir/dev'
+alias cdc='cd /home/pir/c3qo'
 alias cdb='cd /home/pir/build'
 
 # GREP
