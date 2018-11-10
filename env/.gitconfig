@@ -1,6 +1,8 @@
 [user]
     email = pierre.gagelin@gmail.com
     name = Pierre Gagelin
+[core]
+    editor = vim
 [push]
     default = simple
 [alias]
