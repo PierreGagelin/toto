@@ -32,7 +32,11 @@ function (toto_add_lib target_name target_type target_sources)
     target_include_directories(${target_name} PRIVATE ${INCLUDE_DIR})
 endfunction (toto_add_lib)
 
-# Build tests
+#
+#   Build tests:
+#       - some are optional
+#       - some aren't
+#
 if (${TOTO_CPP})
     add_subdirectory(cpp)
 endif()
@@ -52,3 +56,5 @@ endif()
 if (${TOTO_ZMQ})
     add_subdirectory(zmq)
 endif()
+
+add_subdirectory(python)
