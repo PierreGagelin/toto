@@ -26,3 +26,7 @@ alias V='valgrind --leak-check=full --show-leak-kinds=all'
 
 # ROBOT
 alias robot='PYTHONDONTWRITEBYTECODE=1 robot --output NONE --report NONE --log NONE'
+
+# PYTHON
+alias python='PYTHONDONTWRITEBYTECODE=1 python'
+alias python3='PYTHONDONTWRITEBYTECODE=1 python3'
