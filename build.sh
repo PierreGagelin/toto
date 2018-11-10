@@ -8,7 +8,7 @@
 DIR_SCRIPT=$(dirname $0)
 DIR_CMD=$(pwd)
 DIR_SOURCE=$DIR_CMD/$DIR_SCRIPT
-DIR_BUILD=$DIR_SOURCE/../build
+DIR_BUILD=$DIR_SOURCE/../build/toto
 
 # Exit on error or undefined variable
 set -eu
