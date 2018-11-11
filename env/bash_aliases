@@ -4,6 +4,9 @@
 alias ls='ls --color=auto'
 alias ll='ls -alh'
 
+# TREE
+alias tree='tree -C'
+
 # CD
 alias cdc='cd /home/pir/c3qo'
 alias cdb='cd /home/pir/build'
