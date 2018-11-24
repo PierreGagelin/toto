@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import sys
 
@@ -14,6 +15,8 @@ message = toto_pb_pb2.toto_pb()
 print("{}".format(message.HasField("toto")))
 message.toto = "hello world"
 print("{}".format(message.HasField("toto")))
+
+message.type = toto_pb_pb2.toto_pb.TOTO_ONE
 
 message.ids.append(1)
 message.ids.append(2)

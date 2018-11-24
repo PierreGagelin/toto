@@ -11,19 +11,25 @@ extern "C"
 //
 static void proto_print(TotoPb *msg)
 {
-    ASSERT(toto_pb__descriptor.fields[0].type == PROTOBUF_C_TYPE_STRING);
-    ASSERT(toto_pb__descriptor.fields[0].label == PROTOBUF_C_LABEL_REQUIRED);
-    ASSERT(std::string(toto_pb__descriptor.fields[0].name) == "toto");
+    ASSERT(toto_pb__descriptor.fields[0].type == PROTOBUF_C_TYPE_ENUM);
+    ASSERT(toto_pb__descriptor.fields[0].label == PROTOBUF_C_LABEL_OPTIONAL);
+    ASSERT(std::string(toto_pb__descriptor.fields[0].name) == "type");
+    ASSERT(msg->has_type != 0);
 
-    ASSERT(toto_pb__descriptor.fields[1].type == PROTOBUF_C_TYPE_INT32);
-    ASSERT(toto_pb__descriptor.fields[1].label == PROTOBUF_C_LABEL_REPEATED);
-    ASSERT(std::string(toto_pb__descriptor.fields[1].name) == "ids");
+    ASSERT(toto_pb__descriptor.fields[1].type == PROTOBUF_C_TYPE_STRING);
+    ASSERT(toto_pb__descriptor.fields[1].label == PROTOBUF_C_LABEL_REQUIRED);
+    ASSERT(std::string(toto_pb__descriptor.fields[1].name) == "toto");
+
+    ASSERT(toto_pb__descriptor.fields[2].type == PROTOBUF_C_TYPE_INT32);
+    ASSERT(toto_pb__descriptor.fields[2].label == PROTOBUF_C_LABEL_REPEATED);
+    ASSERT(std::string(toto_pb__descriptor.fields[2].name) == "ids");
 
     DEBUG("Message information [name=%s]", toto_pb__descriptor.name);
-    DEBUG("Field information [index=%u ; name=%s ; value=%s]", 0u, toto_pb__descriptor.fields[0].name, msg->toto);
+    DEBUG("Field information [index=%u ; name=%s ; value=%d]", 0u, toto_pb__descriptor.fields[0].name, msg->type);
+    DEBUG("Field information [index=%u ; name=%s ; value=%s]", 1u, toto_pb__descriptor.fields[1].name, msg->toto);
     for (size_t j = 0; j < msg->n_ids; ++j)
     {
-        DEBUG("Field information [index=%u.%zu ; name=%s ; value=%d]", 1u, j, toto_pb__descriptor.fields[1].name, msg->ids[j]);
+        DEBUG("Field information [index=%u.%zu ; name=%s ; value=%d]", 2u, j, toto_pb__descriptor.fields[2].name, msg->ids[j]);
     }
 }
 
@@ -37,6 +43,8 @@ int main(int, char **)
 
     toto_pb__init(&input);
 
+    input.type = TOTO_PB__TOTO_ENUM__TOTO_TWO;
+    input.has_type = 1;
     input.toto = str;
     input.ids = ids;
     input.n_ids = (sizeof(ids) / sizeof(ids[0]));

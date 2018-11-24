@@ -3,6 +3,13 @@ syntax = "proto2";
 
 message toto_pb
 {
+    enum toto_enum
+    {
+        TOTO_ONE = 1;
+        TOTO_TWO = 2;
+        TOTO_THREE = 3;
+    }
+    optional toto_enum type = 1;
     required string toto = 6;
     repeated int32 ids = 7;
 }
