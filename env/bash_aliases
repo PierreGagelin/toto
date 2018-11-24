@@ -1,4 +1,4 @@
-#! /bin/bash
+#!usr/bin/env bash
 
 # LS
 alias ls='ls --color=auto'
@@ -6,10 +6,6 @@ alias ll='ls -alh'
 
 # TREE
 alias tree='tree -C'
-
-# CD
-alias cdc='cd /home/pir/c3qo'
-alias cdb='cd /home/pir/build'
 
 # GREP
 alias grep='grep -n --color=auto'
