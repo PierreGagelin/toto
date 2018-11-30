@@ -1,15 +1,25 @@
 
-syntax = "proto2";
+syntax = "proto3";
 
 message toto_pb
 {
     enum toto_enum
     {
+        TOTO_ZERO = 0;
         TOTO_ONE = 1;
         TOTO_TWO = 2;
-        TOTO_THREE = 3;
     }
-    optional toto_enum type = 1;
-    required string toto = 6;
+    toto_enum type = 1;
+    string toto = 6;
     repeated int32 ids = 7;
+}
+
+message toto_oneof
+{
+    oneof msg_type
+    {
+        int32 a = 1;
+        string b = 2;
+        toto_pb c = 3;
+    }
 }
