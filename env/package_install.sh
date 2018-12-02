@@ -23,11 +23,13 @@ sudo apt install -y python3
 sudo apt install -y python3-pip
 sudo apt install -y valgrind
 sudo apt install -y lcov
+sudo apt install -y cppcheck
 sudo apt install -y net-tools
 
 # dev libraries
 sudo apt install -y libboost-dev
 sudo apt install -y libzmq3-dev
+sudo apt install -y python3-tk
 python3 -m pip install pylint
 python3 -m pip install zmq
 python3 -m pip install protobuf
