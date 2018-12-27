@@ -15,27 +15,25 @@
 
 #include <boost/intrusive_ptr.hpp>
 
-#define STR(token) #token
-
 #define DEBUG(msg, ...)                             \
     do                                              \
     {                                               \
         printf("[DEBUG] " msg "\n", ##__VA_ARGS__); \
-    } while (false);
+    } while (false)
 #define ERROR(msg, ...)                             \
-    do                                            \
-    {                                             \
+    do                                              \
+    {                                               \
         printf("[ERROR] " msg "\n", ##__VA_ARGS__); \
-    } while (false);
+    } while (false)
 
-#define ASSERT(condition)                             \
-    do                                                \
-    {                                                 \
-        if (!(condition))                             \
-        {                                             \
-            ERROR("Assertion failed: " STR(condition)); \
-            exit(1);                                  \
-        }                                             \
-    } while (false);
+#define ASSERT(condition)                           \
+    do                                              \
+    {                                               \
+        if (!(condition))                           \
+        {                                           \
+            ERROR("Assertion failed: " #condition); \
+            exit(1);                                \
+        }                                           \
+    } while (false)
 
 #endif // TOTO_HPP
