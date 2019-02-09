@@ -12,11 +12,9 @@ extern "C"
 static void toto_pb_print(TotoPb *msg)
 {
     ASSERT(toto_pb__descriptor.fields[0].type == PROTOBUF_C_TYPE_ENUM);
-    ASSERT(toto_pb__descriptor.fields[0].label == PROTOBUF_C_LABEL_NONE);
     ASSERT(std::string(toto_pb__descriptor.fields[0].name) == "type");
 
     ASSERT(toto_pb__descriptor.fields[1].type == PROTOBUF_C_TYPE_STRING);
-    ASSERT(toto_pb__descriptor.fields[1].label == PROTOBUF_C_LABEL_NONE);
     ASSERT(std::string(toto_pb__descriptor.fields[1].name) == "toto");
 
     ASSERT(toto_pb__descriptor.fields[2].type == PROTOBUF_C_TYPE_INT32);

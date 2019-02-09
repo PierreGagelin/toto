@@ -4,6 +4,8 @@
 
 #include "toto.hpp"
 
+#include <boost/intrusive_ptr.hpp>
+
 constexpr size_t iteration_count = 1 * 10 * 1000;
 size_t hit;
 

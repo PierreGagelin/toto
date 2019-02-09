@@ -13,8 +13,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include <boost/intrusive_ptr.hpp>
-
 #define DEBUG(msg, ...)                             \
     do                                              \
     {                                               \
