@@ -13,7 +13,7 @@ add_library(toto_pb STATIC ${SOURCES})
 target_compile_options(toto_pb PRIVATE ${COMPILE_OPTION_CPP})
 target_include_directories(toto_pb PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(toto_pb PUBLIC ${PROTOBUF_INCLUDE_DIRS})
-target_link_libraries(toto_pb /usr/local/lib/libprotobuf.a pthread)
+target_link_libraries(toto_pb protobuf)
 
 # Build protobuf test
 toto_add_test(tu_toto_pb tu_toto_pb.cpp)
@@ -42,7 +42,7 @@ add_custom_command(
 
 add_library(toto_proto_c STATIC ${PROTO_GEN})
 
-target_link_libraries(toto_proto_c /usr/local/lib/libprotobuf-c.a)
+target_link_libraries(toto_proto_c protobuf-c)
 target_compile_options(toto_proto_c PRIVATE ${COMPILE_OPTION_C})
 target_include_directories(toto_proto_c PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(toto_proto_c PUBLIC /usr/local/include)

@@ -26,7 +26,7 @@ CMAKE_BUILD_TYPE="Debug"
 # Action to do
 ACTION_BUILD="false"
 ACTION_CLEAN="false"
-ACTION_INSTALL="false"
+ACTION_SETUP="false"
 ACTION_TEST="false"
 
 #
