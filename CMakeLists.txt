@@ -64,3 +64,4 @@ if (${TOTO_ZMQ})
 endif()
 
 add_subdirectory(python)
+add_subdirectory(angular)
