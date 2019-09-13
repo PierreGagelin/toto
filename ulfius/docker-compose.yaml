@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+
+  # Web framework to build REST API
+  ulfius:
+    build: .
+    container_name: ulfius
+    hostname: ulfius
+    stdin_open: true
+    tty: true
+    ports:
+    - "1664:1664"
+    volumes:
+    - ./code:/code
