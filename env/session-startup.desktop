@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Type=Application
-Name=SessionStartup
-Comment=Some custom operations to do on session startup
-Exec=/home/pir/Documents/scripts/session-startup.sh
-Icon=applications-utilities
-Categories=GTK;Utility;
