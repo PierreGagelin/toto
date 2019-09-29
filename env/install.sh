@@ -17,6 +17,7 @@ sudo apt install -y net-tools
 PKG_KEY="/usr/share/keyrings/packages.microsoft.gpg"
 PKG_SRC="deb [arch=amd64 signed-by=$PKG_KEY] https://packages.microsoft.com/repos/vscode stable main"
 
+sudo apt install -y curl
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/packages.microsoft.gpg
 sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg $PKG_KEY
 
@@ -33,4 +34,6 @@ cp bashrc $HOME/.bashrc
 cp bash_aliases $HOME/.bash_aliases
 cp gitconfig $HOME/.gitconfig
 cp vimrc $HOME/.vimrc
+
+mkdir -p $HOME/.config/Code/User/
 cp settings.json $HOME/.config/Code/User/settings.json
