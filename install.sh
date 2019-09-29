@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
 
-set -eu
-
 #
 # This file is meant to install the requirement for this project
 #
+
+# fail on any error or undefined variable
+set -eu
 
 #
 # Project required packages
@@ -32,9 +33,6 @@ python3 -m pip install robotframework
 # Docker environment
 #
 
-# fail on any error or undefined variable
-set -eu
-
 # uninstall old versions of Docker
 sudo apt remove -y docker
 sudo apt remove -y docker-engine
@@ -51,7 +49,7 @@ sudo apt install -y gnupg-agent
 sudo apt install -y software-properties-common
 
 # add Docker GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 # add Docker repository
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
