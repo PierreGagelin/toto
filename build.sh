@@ -14,9 +14,6 @@ DIR_BUILD=$DIR_SOURCE/../build/toto
 set -eu
 
 # Customize toto
-TOTO_CPP="OFF"
-TOTO_FACTORY="OFF"
-TOTO_JSON="OFF"
 TOTO_PROTOBUF="OFF"
 TOTO_ZMQ="OFF"
 
@@ -34,7 +31,6 @@ ACTION_TEST="false"
 #
 function action_setup
 {
-    ./cpp/setup.sh
     ./protobuf/setup.sh
     ./zmq/setup.sh
 }
@@ -80,27 +76,15 @@ function action_test
 #
 # Retrieve command line options
 #
-while getopts "AB:CFJPZbchst" option
+while getopts "AB:PZbchst" option
 do
     case $option in
         A)
-            TOTO_CPP="ON"
-            TOTO_FACTORY="ON"
-            TOTO_JSON="ON"
             TOTO_PROTOBUF="ON"
             TOTO_ZMQ="ON"
             ;;
         B)
             CMAKE_BUILD_TYPE=$OPTARG
-            ;;
-        C)
-            TOTO_CPP="ON"
-            ;;
-        F)
-            TOTO_FACTORY="ON"
-            ;;
-        J)
-            TOTO_JSON="ON"
             ;;
         P)
             TOTO_PROTOBUF="ON"
@@ -132,9 +116,6 @@ done
 # Build options
 CMAKE_OPTION=
 CMAKE_OPTION="$CMAKE_OPTION -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE"
-CMAKE_OPTION="$CMAKE_OPTION -DTOTO_CPP:BOOL=$TOTO_CPP"
-CMAKE_OPTION="$CMAKE_OPTION -DTOTO_FACTORY:BOOL=$TOTO_FACTORY"
-CMAKE_OPTION="$CMAKE_OPTION -DTOTO_JSON:BOOL=$TOTO_JSON"
 CMAKE_OPTION="$CMAKE_OPTION -DTOTO_PROTOBUF:BOOL=$TOTO_PROTOBUF"
 CMAKE_OPTION="$CMAKE_OPTION -DTOTO_ZMQ:BOOL=$TOTO_ZMQ"
 
