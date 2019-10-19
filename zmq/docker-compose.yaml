@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+
+  # Message queue library
+  zmq:
+    build: .
+    container_name: zmq
+    hostname: zmq
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./code:/code

@@ -1,8 +1,9 @@
 
-#include "toto.hpp"
-
+#include <cassert>
+#include <cstring>
 #include <set>
 #include <string>
+#include <vector>
 
 extern "C"
 {
@@ -21,7 +22,7 @@ static void message_clear(std::vector<zmq_msg_t> &msg)
         int rc;
 
         rc = zmq_msg_close(&part);
-        ASSERT(rc == 0);
+        assert(rc == 0);
     }
 
     msg.clear();
@@ -39,7 +40,7 @@ static void message_recv(void *socket, std::vector<zmq_msg_t> &msg)
 
         zmq_msg_init(&part);
         rc = zmq_msg_recv(&part, socket, 0);
-        ASSERT(rc != -1);
+        assert(rc != -1);
 
         msg.push_back(part);
 
@@ -51,7 +52,7 @@ static void message_recv(void *socket, std::vector<zmq_msg_t> &msg)
 
         message = static_cast<char *>(zmq_msg_data(&msg[0]));
 
-        DEBUG("Received message [message=%s]", message);
+        printf("Received message [message=%s]\n", message);
     }
     else if (msg.size() == 2u)
     {
@@ -67,11 +68,11 @@ static void message_recv(void *socket, std::vector<zmq_msg_t> &msg)
 
         message = static_cast<char *>(zmq_msg_data(&msg[1]));
 
-        DEBUG("Received message [client=%s ; message=%s]", name, message);
+        printf("Received message [client=%s ; message=%s]\n", name, message);
     }
     else
     {
-        ASSERT("unexpected part counts" == nullptr);
+        assert("unexpected part counts" == nullptr);
     }
 
     message_clear(msg);
@@ -88,16 +89,16 @@ static void message_send(void *socket, std::vector<zmq_msg_t> &msg)
     {
         size = zmq_msg_size(&(*it));
         rc = zmq_msg_send(&(*it), socket, ZMQ_SNDMORE);
-        ASSERT(rc != -1);
-        ASSERT(static_cast<size_t>(rc) == size);
+        assert(rc != -1);
+        assert(static_cast<size_t>(rc) == size);
     }
 
     size = zmq_msg_size(&(*end));
     rc = zmq_msg_send(&(*end), socket, 0);
-    ASSERT(rc != -1);
-    ASSERT(static_cast<size_t>(rc) == size);
+    assert(rc != -1);
+    assert(static_cast<size_t>(rc) == size);
 
-    DEBUG("Sent multi-part message [part_count=%zu]", msg.size());
+    printf("Sent multi-part message [part_count=%zu]\n", msg.size());
 
     msg.clear();
 }
@@ -108,10 +109,10 @@ static void *server_start(void *ctx)
     int rc;
 
     server = zmq_socket(ctx, ZMQ_ROUTER);
-    ASSERT(server != nullptr);
+    assert(server != nullptr);
 
     rc = zmq_bind(server, TCP_ADDRESS);
-    ASSERT(rc == 0);
+    assert(rc == 0);
 
     return server;
 }
@@ -122,13 +123,13 @@ static void *client_start(void *ctx, const char *client_id)
     int rc;
 
     client = zmq_socket(ctx, ZMQ_DEALER);
-    ASSERT(client != nullptr);
+    assert(client != nullptr);
 
     rc = zmq_setsockopt(client, ZMQ_IDENTITY, client_id, strlen(client_id) + 1);
-    ASSERT(rc == 0);
+    assert(rc == 0);
 
     rc = zmq_connect(client, TCP_ADDRESS);
-    ASSERT(rc == 0);
+    assert(rc == 0);
 
     return client;
 }
@@ -148,13 +149,13 @@ static void server_data(void *socket)
         message = "hello " + client;
 
         rc = zmq_msg_init_size(&part, client.size() + 1);
-        ASSERT(rc == 0);
+        assert(rc == 0);
 
         memcpy(zmq_msg_data(&part), client.c_str(), client.size() + 1);
         msg.push_back(part);
 
         rc = zmq_msg_init_size(&part, message.size() + 1);
-        ASSERT(rc == 0);
+        assert(rc == 0);
 
         memcpy(zmq_msg_data(&part), message.c_str(), message.size() + 1);
         msg.push_back(part);
@@ -170,7 +171,7 @@ static void client_data(void *socket)
     int rc;
 
     rc = zmq_msg_init_size(&part, 6);
-    ASSERT(rc == 0);
+    assert(rc == 0);
 
     memset(zmq_msg_data(&part), 'A', 6);
 
@@ -194,10 +195,10 @@ int main(int argc, char **argv)
         {
         case 'i':
             client_id = optarg;
-            DEBUG("Configured client identifier [client_id=%s]", client_id);
+            printf("Configured client identifier [client_id=%s]\n", client_id);
             break;
         default:
-            ASSERT("Failed to parse option" == nullptr);
+            assert("Failed to parse option" == nullptr);
             break;
         }
     }
@@ -206,11 +207,11 @@ int main(int argc, char **argv)
     int minor;
     int patch;
     zmq_version(&major, &minor, &patch);
-    DEBUG("ZMQ version: %d.%d.%d", major, minor, patch);
+    printf("ZMQ version: %d.%d.%d\n", major, minor, patch);
 
     // Setup ZMQ
     void *zmq_ctx = zmq_ctx_new();
-    ASSERT(zmq_ctx != nullptr);
+    assert(zmq_ctx != nullptr);
 
     void *zmq_sock;
     if (client_id == nullptr)
@@ -236,7 +237,7 @@ int main(int argc, char **argv)
         ready_count = zmq_poll(&poll_entry, 1, 100);
         if (ready_count == -1)
         {
-            ERROR("Failed to call zmq_poll: %s [errno=%d]", strerror(errno), errno);
+            printf("Failed to call zmq_poll: %s [errno=%d]\n", strerror(errno), errno);
             continue;
         }
         else if (ready_count == 0)
@@ -244,8 +245,8 @@ int main(int argc, char **argv)
             // Nothing ready at the moment
             continue;
         }
-        ASSERT(ready_count == 1);
-        ASSERT(poll_entry.revents == ZMQ_POLLIN);
+        assert(ready_count == 1);
+        assert(poll_entry.revents == ZMQ_POLLIN);
 
         if (client_id == nullptr)
         {
