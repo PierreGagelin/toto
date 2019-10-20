@@ -35,5 +35,3 @@ sudo apt-key del 0EBFCD88
 # sudo apt purge -y curl
 # sudo apt purge -y gnupg-agent
 # sudo apt purge -y software-properties-common
-
-sudo apt autoremove -y
