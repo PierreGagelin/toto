@@ -1,8 +1,13 @@
 
+cmake_minimum_required(VERSION 2.8)
+project(toto)
 
-#
-# Build a protobuf example
-#
+# Generate a JSON file with compilation commands (used with Visual Studio Code)
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
+
 include(FindProtobuf)
 find_package(Protobuf REQUIRED)
 
@@ -10,20 +15,18 @@ find_package(Protobuf REQUIRED)
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS toto_pb.proto)
 set(SOURCES ${PROTO_SRCS} ${PROTO_HDRS})
 add_library(toto_pb STATIC ${SOURCES})
-target_compile_options(toto_pb PRIVATE ${COMPILE_OPTION_CPP})
 target_include_directories(toto_pb PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(toto_pb PUBLIC ${PROTOBUF_INCLUDE_DIRS})
 target_link_libraries(toto_pb protobuf)
 
 # Build protobuf test
-toto_add_test(tu_toto_pb tu_toto_pb.cpp)
+add_executable(tu_toto_pb tu_toto_pb.cpp)
 target_link_libraries(tu_toto_pb toto_pb)
 
 # Generate python
 protobuf_generate_python(PROTO_SRCS_PY toto_pb.proto)
 add_custom_target(toto_pb_py ALL DEPENDS ${PROTO_SRCS_PY})
 configure_file(tu_toto_pb.py tu_toto_pb.py COPYONLY)
-add_test(NAME tu_toto_pb_py COMMAND python3 tu_toto_pb.py)
 
 #
 # Build a protobuf-c example
@@ -43,10 +46,9 @@ add_custom_command(
 add_library(toto_proto_c STATIC ${PROTO_GEN})
 
 target_link_libraries(toto_proto_c protobuf-c)
-target_compile_options(toto_proto_c PRIVATE ${COMPILE_OPTION_C})
 target_include_directories(toto_proto_c PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(toto_proto_c PUBLIC /usr/local/include)
 
 # Build test
-toto_add_test(tu_toto_pb_c tu_toto_pb_c.cpp)
+add_executable(tu_toto_pb_c tu_toto_pb_c.cpp)
 target_link_libraries(tu_toto_pb_c toto_proto_c)

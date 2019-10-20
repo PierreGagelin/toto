@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+
+  # Serialization library
+  protobuf:
+    build: .
+    container_name: protobuf
+    hostname: protobuf
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./code:/code

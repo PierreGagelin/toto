@@ -2,13 +2,14 @@
 // @brief Test file for the hello block
 //
 
+#include <cassert>
+#include <string>
+
 // Protobuf library
 #include <google/protobuf/message_lite.h>
 #include <google/protobuf/text_format.h>
 
 #include "toto_pb.pb.h"
-
-#include "toto.hpp"
 
 // Fill a message
 static void proto_fill(class toto_pb &msg)
@@ -24,11 +25,11 @@ static void proto_fill(class toto_pb &msg)
 // Check a message
 static void proto_check(class toto_pb &msg)
 {
-    ASSERT(msg.toto() == "hello world");
+    assert(msg.toto() == "hello world");
 
     for (int i = 0; i < msg.ids_size(); ++i)
     {
-        ASSERT(msg.ids(i) == (2 * i));
+        assert(msg.ids(i) == (2 * i));
     }
 }
 
@@ -40,10 +41,10 @@ static void proto_text()
 
     proto_fill(input);
 
-    ASSERT(google::protobuf::TextFormat::PrintToString(input, &buffer) == true);
-    DEBUG("Formatted message to text [out=%s]", buffer.c_str());
+    assert(google::protobuf::TextFormat::PrintToString(input, &buffer) == true);
+    printf("Formatted message to text [out=%s]\n", buffer.c_str());
 
-    ASSERT(google::protobuf::TextFormat::ParseFromString(buffer, &output) == true);
+    assert(google::protobuf::TextFormat::ParseFromString(buffer, &output) == true);
     proto_check(output);
 }
 
@@ -60,21 +61,21 @@ static void proto_inspect()
     const google::protobuf::Reflection *refl = msg.GetReflection();
     int fieldCount = desc->field_count();
 
-    DEBUG("Message information [name=%s]", desc->full_name().c_str());
+    printf("Message information [name=%s]\n", desc->full_name().c_str());
 
     for (int i = 0; i < fieldCount; ++i)
     {
         const google::protobuf::FieldDescriptor *field = desc->field(i);
         if ((field->type() == google::protobuf::FieldDescriptor::TYPE_STRING) && (field->is_repeated() == false))
         {
-            DEBUG("Field information [index=%d ; name=%s ; type=%s ; value=%s]", i, field->name().c_str(), field->type_name(), refl->GetString(msg, field).c_str());
+            printf("Field information [index=%d ; name=%s ; type=%s ; value=%s]\n", i, field->name().c_str(), field->type_name(), refl->GetString(msg, field).c_str());
         }
         else if ((field->type() == google::protobuf::FieldDescriptor::TYPE_INT32) && (field->is_repeated() == true))
         {
             int count = refl->FieldSize(msg, field);
             for (int j = 0; j < count; ++j)
             {
-                DEBUG("Field information [index=%d.%d ; name=%s ; type=%s ; value=%d]", i, j, field->name().c_str(), field->type_name(), refl->GetRepeatedInt32(msg, field, j));
+                printf("Field information [index=%d.%d ; name=%s ; type=%s ; value=%d]\n", i, j, field->name().c_str(), field->type_name(), refl->GetRepeatedInt32(msg, field, j));
             }
         }
     }
@@ -91,8 +92,8 @@ static void proto_serialize_parse()
 
     proto_fill(input);
 
-    ASSERT(input.SerializeToString(&buf) == true);
-    ASSERT(output.ParseFromString(buf) == true);
+    assert(input.SerializeToString(&buf) == true);
+    assert(output.ParseFromString(buf) == true);
 
     proto_check(output);
 }

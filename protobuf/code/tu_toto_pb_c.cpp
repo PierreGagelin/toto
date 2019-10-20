@@ -1,32 +1,32 @@
 
+#include <string>
+
 extern "C"
 {
 #include "toto_pb.pb-c.h"
 }
-
-#include "toto.hpp"
 
 //
 // @brief Check descriptor and print a message
 //
 static void toto_pb_print(TotoPb *msg)
 {
-    ASSERT(toto_pb__descriptor.fields[0].type == PROTOBUF_C_TYPE_ENUM);
-    ASSERT(std::string(toto_pb__descriptor.fields[0].name) == "type");
+    assert(toto_pb__descriptor.fields[0].type == PROTOBUF_C_TYPE_ENUM);
+    assert(std::string(toto_pb__descriptor.fields[0].name) == "type");
 
-    ASSERT(toto_pb__descriptor.fields[1].type == PROTOBUF_C_TYPE_STRING);
-    ASSERT(std::string(toto_pb__descriptor.fields[1].name) == "toto");
+    assert(toto_pb__descriptor.fields[1].type == PROTOBUF_C_TYPE_STRING);
+    assert(std::string(toto_pb__descriptor.fields[1].name) == "toto");
 
-    ASSERT(toto_pb__descriptor.fields[2].type == PROTOBUF_C_TYPE_INT32);
-    ASSERT(toto_pb__descriptor.fields[2].label == PROTOBUF_C_LABEL_REPEATED);
-    ASSERT(std::string(toto_pb__descriptor.fields[2].name) == "ids");
+    assert(toto_pb__descriptor.fields[2].type == PROTOBUF_C_TYPE_INT32);
+    assert(toto_pb__descriptor.fields[2].label == PROTOBUF_C_LABEL_REPEATED);
+    assert(std::string(toto_pb__descriptor.fields[2].name) == "ids");
 
-    DEBUG("Message information [name=%s]", toto_pb__descriptor.name);
-    DEBUG("Field information [index=%u ; name=%s ; value=%d]", 0u, toto_pb__descriptor.fields[0].name, msg->type);
-    DEBUG("Field information [index=%u ; name=%s ; value=%s]", 1u, toto_pb__descriptor.fields[1].name, msg->toto);
+    printf("Message information [name=%s]\n", toto_pb__descriptor.name);
+    printf("Field information [index=%u ; name=%s ; value=%d]\n", 0u, toto_pb__descriptor.fields[0].name, msg->type);
+    printf("Field information [index=%u ; name=%s ; value=%s]\n", 1u, toto_pb__descriptor.fields[1].name, msg->toto);
     for (size_t j = 0; j < msg->n_ids; ++j)
     {
-        DEBUG("Field information [index=%u.%zu ; name=%s ; value=%d]", 2u, j, toto_pb__descriptor.fields[2].name, msg->ids[j]);
+        printf("Field information [index=%u.%zu ; name=%s ; value=%d]\n", 2u, j, toto_pb__descriptor.fields[2].name, msg->ids[j]);
     }
 }
 
@@ -46,7 +46,7 @@ static void test_pack()
     input.n_ids = (sizeof(ids) / sizeof(ids[0]));
 
     size_t size = toto_pb__get_packed_size(&input);
-    ASSERT(size <= sizeof(buffer));
+    assert(size <= sizeof(buffer));
 
     toto_pb__pack(&input, buffer);
 
@@ -70,13 +70,13 @@ static void test_oneof()
     input.b = hello;
 
     size_t size = toto_oneof__get_packed_size(&input);
-    ASSERT(size <= sizeof(buffer));
+    assert(size <= sizeof(buffer));
 
     toto_oneof__pack(&input, buffer);
 
     output = toto_oneof__unpack(NULL, size, buffer);
 
-    ASSERT(output->msg_type_case == TOTO_ONEOF__MSG_TYPE_B);
+    assert(output->msg_type_case == TOTO_ONEOF__MSG_TYPE_B);
 
     toto_oneof__free_unpacked(output, NULL);
 }
