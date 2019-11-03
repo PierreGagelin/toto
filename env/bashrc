@@ -1,3 +1,4 @@
+#!usr/bin/env bash
 
 # If not running interactively, don't do anything
 case $- in
@@ -40,15 +41,8 @@ shopt -s checkwinsize
 GIT_PS1_SHOWDIRTYSTATE=1
 PS1='\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\] \$ '
 
-# GNU make customization flags
-if [[ ! "$MAKEFLAGS" =~ "--no-print-directory" ]]
-then
-    export MAKEFLAGS="$MAKEFLAGS --no-print-directory"
-fi
-
 # Alias definitions
 if [ -f ~/.bash_aliases ]
 then
     source ~/.bash_aliases
 fi
-
