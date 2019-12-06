@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+
+  # Key value store application
+  redis:
+    build: .
+    container_name: redis
+    hostname: redis
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./code:/code
