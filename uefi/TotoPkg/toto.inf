@@ -1,0 +1,20 @@
+[Defines]
+    INF_VERSION = 0x00010005
+    BASE_NAME = Toto
+    FILE_GUID = 768E2991-2858-4F1C-ADC8-5EA85285E1DC
+    MODULE_TYPE = UEFI_APPLICATION
+    VERSION_STRING = 1.0
+    ENTRY_POINT = UefiMain
+
+[Sources]
+    main.c
+
+[Packages]
+    MdePkg/MdePkg.dec
+    SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+    Tpm2CommandLib
+    Tpm2DeviceLib
+    UefiApplicationEntryPoint
+    UefiLib
