@@ -1,19 +1,30 @@
 {
+    "make.configureOnOpen": false,
+
+    "editor.acceptSuggestionOnEnter": "off",
     "editor.detectIndentation": false,
     "editor.fontSize": 14,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    "files.trimFinalNewlines": true,
-    "terminal.integrated.fontSize": 14,
-    "workbench.startupEditor": "newUntitledFile",
     "editor.minimap.enabled": false,
-    "workbench.statusBar.visible": false,
-    "workbench.activityBar.visible": false,
-    "window.menuBarVisibility": "toggle",
-    "workbench.colorTheme": "Default Light+",
-    "terminal.integrated.rendererType": "dom",
-    "update.enableWindowsBackgroundUpdates": false,
-    "update.showReleaseNotes": false,
+    "editor.renderWhitespace": "all",
+
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+
     "telemetry.enableCrashReporter": false,
     "telemetry.enableTelemetry": false,
+
+    "update.enableWindowsBackgroundUpdates": false,
+    "update.mode": "none",
+    "update.showReleaseNotes": false,
+
+    "window.menuBarVisibility": "toggle",
+
+    "workbench.activityBar.visible": false,
+    "workbench.colorTheme": "Default Light+",
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.statusBar.visible": false
 }
