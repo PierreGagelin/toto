@@ -1,13 +1,13 @@
-# What
+# Robot Framework
 
-In this folder lay an example of robot framework usage
+In this folder lay an example of Robot Framework usage
 
 - simple file with Settings, Variables, Test Cases and Keywords
 - python library
 
 ## How to
 
-Robot framework goes with your python environment:
+Robot Framework goes with your python environment:
 
 - python3 -m pip install robotframework
 

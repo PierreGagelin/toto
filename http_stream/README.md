@@ -1,4 +1,4 @@
-# Video streaming using HTTP
+# HTTP Stream
 
 The goal is to stream a video though HTTP with VLC and display it on a web browser using only HTML
 

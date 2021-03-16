@@ -1,4 +1,4 @@
-# UEFI test
+# UEFI
 
 This directory hosts an example of how to build a UEFI application that uses a software TPM through QEMU
 
