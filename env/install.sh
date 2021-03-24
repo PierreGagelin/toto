@@ -1,39 +1,49 @@
-#!/usr/bin/env sh
-
-set -eu
+#!/usr/bin/env bash
 
 #
 # This file is optional, it installs and configures my favorite packages
 #
 
-sudo apt update
-sudo apt install -y vim
-sudo apt install -y bash-completion
-sudo apt install -y tree
-sudo apt install -y gitk
-sudo apt install -y net-tools
+# Forbid error and undefined variables
+set -e
+set -u
 
-# Visual Studio Code (vscode)
-PKG_KEY="/usr/share/keyrings/packages.microsoft.gpg"
-PKG_SRC="deb [arch=amd64 signed-by=$PKG_KEY] https://packages.microsoft.com/repos/vscode stable main"
+#
+# Install some packages
+#
+function install_packages()
+{
+    local pkg_list=()
+    local tmp_dir=
 
-sudo apt install -y curl
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/packages.microsoft.gpg
-sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg $PKG_KEY
+    pkg_list+=("vim")
+    pkg_list+=("bash-completion")
+    pkg_list+=("tree")
+    pkg_list+=("git")
+    pkg_list+=("gitk")
 
-echo $PKG_SRC | sudo tee /etc/apt/sources.list.d/vscode.list
+    sudo apt install -y "${pkg_list[@]}" > /dev/null
+    echo "TOTO INFO: Installed Debian packages"
 
-sudo apt update
-sudo apt install -y code
+    tmp_dir=$(mktemp -d)
+    curl --silent -L "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" --output "${tmp_dir}"/code.deb > /dev/null
+    sudo apt install -y "${tmp_dir}"/code.deb > /dev/null
+    rm -r "${tmp_dir}"
+    echo "TOTO INFO: Installed Visual Studio Code"
+}
+
+install_packages
 
 #
 # Configuration
 #
 
-cp bashrc $HOME/.bashrc
-cp bash_aliases $HOME/.bash_aliases
-cp gitconfig $HOME/.gitconfig
-cp vimrc $HOME/.vimrc
+cp bashrc "${HOME}"/.bashrc
+cp bash_aliases "${HOME}"/.bash_aliases
+cp gitconfig "${HOME}"/.gitconfig
+cp vimrc "${HOME}"/.vimrc
 
-mkdir -p $HOME/.config/Code/User/
-cp settings.json $HOME/.config/Code/User/settings.json
+mkdir -p "${HOME}"/.config/Code/User
+cp keybindings.json "${HOME}"/.config/Code/User
+cp settings.json "${HOME}"/.config/Code/User
+echo "TOTO INFO: Configured packages"
