@@ -47,3 +47,5 @@ mkdir -p "${HOME}"/.config/Code/User
 cp keybindings.json "${HOME}"/.config/Code/User
 cp settings.json "${HOME}"/.config/Code/User
 echo "TOTO INFO: Configured packages"
+
+echo "TOTO INFO: Finished to install environment"

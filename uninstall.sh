@@ -1,37 +1,23 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 #
-# script to tear a docker environment down
+# Uninstall the requirements for this project
 #
 
-# fail on any error or undefined variable
-set -eu
+# Forbid error and undefined variable
+set -e
+set -u
 
-# delete user from the docker group
-sudo gpasswd --del $USER docker
+function uninstall_packages()
+{
+    local pkg_list=()
 
-# delete docker group
-sudo delgroup docker
+    pkg_list+=("docker.io")
+    pkg_list+=("docker-compose")
 
-# delete Docker packages
-sudo apt purge -y docker-ce
-sudo apt purge -y docker-ce-cli
-sudo apt purge -y containerd.io
-sudo apt purge -y docker-compose
+    sudo apt purge -y "${pkg_list[@]}" > /dev/null
+}
 
-# delete Docker databases
-sudo rm -rf /var/lib/docker
+uninstall_packages
 
-# delete Docker repository
-sudo add-apt-repository --remove "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-# delete Docker GPG key
-sudo apt-key del 0EBFCD88
-
-# don't know if those should be removed, anyone else could use them
-#
-# sudo apt purge -y apt-transport-https
-# sudo apt purge -y ca-certificates
-# sudo apt purge -y curl
-# sudo apt purge -y gnupg-agent
-# sudo apt purge -y software-properties-common
+echo "TOTO INFO: Finished to uninstall environment"

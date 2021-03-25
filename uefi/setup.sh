@@ -9,11 +9,11 @@ build -p TotoPkg/toto.dsc -a X64 -b RELEASE -t GCC5 -D TPM20
 echo "TOTO_INFO: Built bootloader"
 
 # Create a UEFI disk
-dd if=/dev/zero of=$HOME/Documents/disk.img bs=100M count=1 > /dev/null 2>&1
+dd if=/dev/zero of="$HOME"/Documents/disk.img bs=100M count=1 > /dev/null 2>&1
 echo "TOTO_INFO: Created disk"
 
 # Setup loop device
-sudo losetup -P /dev/loop0 $HOME/Documents/disk.img
+sudo losetup -P /dev/loop0 "$HOME"/Documents/disk.img
 echo "TOTO_INFO: Set loop device up"
 
 # Create GUID partition table
@@ -74,5 +74,5 @@ $QEMU_CMD
 echo "TOTO_INFO: Ran QEMU"
 
 # Destroy UEFI disk
-rm $HOME/Documents/disk.img
+rm "$HOME"/Documents/disk.img
 echo "TOTO_INFO: Destroyed UEFI disk"

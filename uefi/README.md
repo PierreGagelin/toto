@@ -54,3 +54,4 @@ Note that OVMF.fd needs to have support for TPM device. It is the case for the o
 ## TODO
 
 - add a section to describe how to setup EDKII to build TotoPkg
+- migrate to Docker
