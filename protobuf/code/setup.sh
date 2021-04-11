@@ -1,17 +1,24 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -eu
+# Forbid error and undefined variable
+set -e
+set -u
 
-DIR_BUILD=/tmp/build
-DIR_SRC=/code
+function protobuf_setup()
+{
+    local dir_build=/tmp/build
+    local dir_src=/code
 
-mkdir $DIR_BUILD
+    mkdir $dir_build
 
-cd $DIR_BUILD
-cmake $DIR_SRC
-make
-cd -
+    cd $dir_build
+    cmake $dir_src
+    make
+    cd -
 
-$DIR_BUILD/tu_toto_pb
-$DIR_BUILD/tu_toto_pb_c
-$DIR_BUILD/tu_toto_pb.py
+    $dir_build/tu_toto_pb
+    $dir_build/tu_toto_pb_c
+    $dir_build/tu_toto_pb.py
+}
+
+protobuf_setup

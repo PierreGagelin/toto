@@ -1,0 +1,29 @@
+---
+BasedOnStyle: LLVM
+---
+Language: Cpp
+AlignEscapedNewlines: Left
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortFunctionsOnASingleLine: None
+BinPackArguments: false
+BinPackParameters: false
+BraceWrapping:
+    AfterControlStatement: true
+    AfterEnum: true
+    AfterFunction: true
+    AfterStruct: true
+    AfterUnion: true
+    AfterExternBlock: true
+    BeforeCatch: true
+    BeforeElse: true
+    IndentBraces: false
+    SplitEmptyFunction: true
+    SplitEmptyRecord: true
+    SplitEmptyNamespace: true
+BreakBeforeBraces: Custom
+ColumnLimit: 120
+IndentCaseLabels: true
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: false
+SpacesInContainerLiterals: false
+...
