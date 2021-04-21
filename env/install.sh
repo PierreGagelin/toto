@@ -21,6 +21,7 @@ function install_packages()
     pkg_list+=("tree")
     pkg_list+=("git")
     pkg_list+=("gitk")
+    pkg_list+=("curl")
 
     sudo apt install -y "${pkg_list[@]}" > /dev/null
     echo "TOTO INFO: Installed Debian packages"
